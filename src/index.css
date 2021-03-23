@@ -10,3 +10,14 @@ body {
 .border {
   border: var(--border);
 }
+
+.shadow {
+  box-shadow: var(--shadow-s);
+}
+
+.sticky-navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}

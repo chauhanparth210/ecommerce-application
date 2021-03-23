@@ -55,7 +55,7 @@ const products = [
 
 const Products = () => {
   return (
-    <Row className="d-flex flex-wrap justify-content-center p-4">
+    <Row className="d-flex flex-wrap justify-content-center px-4 mt-10 mb-4">
       {products.map((product) => (
         <Product product={product} key={product.id} />
       ))}

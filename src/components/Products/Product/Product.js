@@ -10,7 +10,7 @@ const Product = ({ product }) => {
           <img
             src={image}
             alt="image_of_product"
-            height="260"
+            height="270"
             className="w-100"
           />
         )}
@@ -24,8 +24,8 @@ const Product = ({ product }) => {
           {description}
         </Text>
         <Icon
-          size={30}
-          name="shopping_cart"
+          size={28}
+          name="add_shopping_cart"
           className="align-self-end mt-5"
           appearance="subtle"
         />
