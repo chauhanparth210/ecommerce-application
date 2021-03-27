@@ -9,7 +9,7 @@ const Product = ({ product, onAddToCart }) => {
     <div className="flex-basis">
       <Card shadow="light" className="d-flex flex-column px-5 py-4">
         {media.source && (
-          <img src={media.source} alt={name} height="300" className="w-100" />
+          <img src={media.source} alt={name} height="280" className="w-100" />
         )}
         <div className="d-flex justify-content-between mt-4">
           <Heading size="l">{name}</Heading>
