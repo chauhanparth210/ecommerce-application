@@ -54,7 +54,7 @@ const products = [
 
 const Products = () => {
   return (
-      <div className="d-flex flex-wrap gap mt-10 px-8 py-6 mb-5">
+    <div className="d-flex flex-wrap gap mt-10 px-8 py-6 mb-5">
       {products.map((product) => (
         <Product product={product} key={product.id} />
       ))}
