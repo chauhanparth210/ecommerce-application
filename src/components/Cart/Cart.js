@@ -1,12 +1,14 @@
 import React from 'react';
 import { Heading, Button } from '@innovaccer/design-system';
 import CartItem from './CartItem/CartItem';
+import { Link } from 'react-router-dom';
 
 const Cart = ({ cart }) => {
   const EmptyCart = () => {
     return (
       <Heading appearance="default" size="l">
-        You have no items in your shopping cart, start adding some!
+        You have no items in your shopping cart,{' '}
+        <Link to="/">start adding some!</Link>
       </Heading>
     );
   };
@@ -16,16 +18,16 @@ const Cart = ({ cart }) => {
       <>
         <div className="d-flex flex-wrap gap">
           {cart.line_items.map((item) => (
-            <div className="flex-basis">
+            <div className="flex-basis" key={item.id}>
               <CartItem item={item} />
             </div>
           ))}
         </div>
-        <div className="d-flex align-items-center justify-content-between flex-wrap mt-8 px-4 py-6 bg-secondary-lightest">
+        <div className="d-flex align-items-center justify-content-around flex-wrap mt-8 px-4 py-6 bg-secondary-lightest">
           <Heading appearance="default" size="xl">
             Subtotal: {cart.subtotal.formatted_with_symbol}
           </Heading>
-          <div className="d-flex ml-6">
+          <div className="d-flex">
             <Button appearance="alert" size="large">
               Empty cart
             </Button>

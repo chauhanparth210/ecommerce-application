@@ -36,6 +36,10 @@ body {
   right: 0;
 }
 
+.remove-text-decoration {
+  text-decoration: none;
+}
+
 ::-webkit-scrollbar {
   width: var(--spacing-l);
 }
