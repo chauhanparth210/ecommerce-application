@@ -1,6 +1,5 @@
 import React from 'react';
 import Product from './Product/Product';
-import { Row } from '@innovaccer/design-system';
 
 const products = [
   {
@@ -55,11 +54,11 @@ const products = [
 
 const Products = () => {
   return (
-    <Row className="d-flex flex-wrap justify-content-center px-4 mt-10 mb-4">
+      <div className="d-flex flex-wrap gap mt-10 px-8 py-6 mb-5">
       {products.map((product) => (
         <Product product={product} key={product.id} />
       ))}
-    </Row>
+    </div>
   );
 };
 

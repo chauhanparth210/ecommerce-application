@@ -3,7 +3,7 @@ import { Heading, Icon } from '@innovaccer/design-system';
 
 const Navbar = () => {
   return (
-    <div className="px-10 py-4 sticky-navbar bg-light d-flex align-items-center justify-content-between shadow">
+    <div className="px-7 py-5 sticky-navbar bg-light d-flex align-items-center justify-content-between shadow">
       <div>
         <Heading size="l">E-Commerce</Heading>
       </div>

@@ -1,16 +1,16 @@
 import React from 'react';
-import { Text, Heading, Column, Card, Icon } from '@innovaccer/design-system';
+import { Text, Heading, Card, Icon } from '@innovaccer/design-system';
 
 const Product = ({ product }) => {
   const { name, description, price, image } = product;
   return (
-    <Column size="3" sizeXS="auto" className="my-6 mx-8">
-      <Card shadow="light" className="w-100 h-100 d-flex flex-column px-5 py-4">
+    <div className="flex-basis">
+      <Card shadow="light" className="d-flex flex-column px-5 py-4">
         {image && (
           <img
             src={image}
             alt="image_of_product"
-            height="270"
+            height="300"
             className="w-100"
           />
         )}
@@ -30,7 +30,7 @@ const Product = ({ product }) => {
           appearance="subtle"
         />
       </Card>
-    </Column>
+    </div>
   );
 };
 
