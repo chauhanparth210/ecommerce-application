@@ -2,8 +2,8 @@ import React from 'react';
 import { Text, Heading, Card, Icon } from '@innovaccer/design-system';
 import parse from 'html-react-parser';
 
-const Product = ({ product }) => {
-  const { name, media, price, description } = product;
+const Product = ({ product, onAddToCart }) => {
+  const { id, name, media, price, description } = product;
 
   return (
     <div className="flex-basis">
@@ -23,8 +23,9 @@ const Product = ({ product }) => {
         <Icon
           size={28}
           name="add_shopping_cart"
-          className="align-self-end mt-5"
+          className="align-self-end mt-5 cursor-pointer"
           appearance="subtle"
+          onClick={() => onAddToCart(id, 1)}
         />
       </Card>
     </div>
