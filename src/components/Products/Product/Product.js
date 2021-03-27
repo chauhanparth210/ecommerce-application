@@ -1,27 +1,24 @@
 import React from 'react';
 import { Text, Heading, Card, Icon } from '@innovaccer/design-system';
+import parse from 'html-react-parser';
 
 const Product = ({ product }) => {
-  const { name, description, price, image } = product;
+  const { name, media, price, description } = product;
+
   return (
     <div className="flex-basis">
       <Card shadow="light" className="d-flex flex-column px-5 py-4">
-        {image && (
-          <img
-            src={image}
-            alt="image_of_product"
-            height="300"
-            className="w-100"
-          />
+        {media.source && (
+          <img src={media.source} alt={name} height="300" className="w-100" />
         )}
         <div className="d-flex justify-content-between mt-4">
           <Heading size="l">{name}</Heading>
-          <Heading size="l" appearance="subtle">
-            {price}
+          <Heading size="m" appearance="subtle">
+            {price.formatted_with_symbol}
           </Heading>
         </div>
         <Text size="large" appearance="subtle" className="ellipsis--noWrap">
-          {description}
+          {parse(description)}
         </Text>
         <Icon
           size={28}

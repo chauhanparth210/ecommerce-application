@@ -35,3 +35,14 @@ body {
   top: 0;
   right: 0;
 }
+
+::-webkit-scrollbar {
+  width: var(--spacing-l);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-dark);
+  border: var(--spacing-s) solid transparent;
+  background-clip: content-box;
+  border-radius: 6px;
+}
