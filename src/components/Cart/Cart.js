@@ -3,7 +3,9 @@ import { Heading, Button } from '@innovaccer/design-system';
 import CartItem from './CartItem/CartItem';
 import { Link } from 'react-router-dom';
 
-const Cart = ({ cart }) => {
+const Cart = ({ cart, onUpdateCartQty, onRemoveFromCart, onEmptyCart }) => {
+  const handleEmptyCart = () => onEmptyCart();
+
   const EmptyCart = () => {
     return (
       <Heading appearance="default" size="l">
@@ -19,7 +21,11 @@ const Cart = ({ cart }) => {
         <div className="d-flex flex-wrap gap">
           {cart.line_items.map((item) => (
             <div className="flex-basis" key={item.id}>
-              <CartItem item={item} />
+              <CartItem
+                item={item}
+                onUpdateCartQty={onUpdateCartQty}
+                onRemoveFromCart={onRemoveFromCart}
+              />
             </div>
           ))}
         </div>
@@ -28,7 +34,7 @@ const Cart = ({ cart }) => {
             Subtotal: {cart.subtotal.formatted_with_symbol}
           </Heading>
           <div className="d-flex">
-            <Button appearance="alert" size="large">
+            <Button appearance="alert" size="large" onClick={handleEmptyCart}>
               Empty cart
             </Button>
             <Button className="ml-6" appearance="primary" size="large">
@@ -40,7 +46,7 @@ const Cart = ({ cart }) => {
     );
   };
 
-  if (!cart.line_items) return 'Loading';
+  if (!cart.line_items) return 'Loading...';
 
   return (
     <div className="mt-10 px-8 py-6 mb-5">
