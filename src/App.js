@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Navbar, Products, Cart } from './components';
+import { Navbar, Products, Cart, Checkout } from './components';
 import { commerce } from './lib/commerce';
 import { Route, Switch } from 'react-router-dom';
 
@@ -63,6 +63,9 @@ function App() {
             onRemoveFromCart={handleRemoveFromCart}
             onEmptyCart={handleEmptyCart}
           />
+        </Route>
+        <Route exact path="/checkout">
+          <Checkout />
         </Route>
       </Switch>
     </>

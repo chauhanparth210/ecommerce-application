@@ -37,9 +37,11 @@ const Cart = ({ cart, onUpdateCartQty, onRemoveFromCart, onEmptyCart }) => {
             <Button appearance="alert" size="large" onClick={handleEmptyCart}>
               Empty cart
             </Button>
-            <Button className="ml-6" appearance="primary" size="large">
-              Checkout
-            </Button>
+            <Link to="/checkout" className="remove-text-decoration">
+              <Button className="ml-6" appearance="primary" size="large">
+                Checkout
+              </Button>
+            </Link>
           </div>
         </div>
       </>
