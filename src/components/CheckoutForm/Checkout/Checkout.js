@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
-import {
-  Button,
-  Heading,
-  Card,
-  Stepper,
-  Text,
-  Badge,
-  Label,
-  Textarea,
-} from '@innovaccer/design-system';
+import { Heading, Card, Stepper, Button } from '@innovaccer/design-system';
+import AddressFrom from '../AddressFrom';
+import PaymentForm from '../PaymentForm';
+import { Link } from 'react-router-dom';
 
 const Center = (props) => {
   const { children, ...rest } = props;
@@ -20,8 +14,8 @@ const Center = (props) => {
 };
 
 const Checkout = () => {
-  const [active, setActive] = React.useState(0);
-  const [completed, setCompleted] = React.useState(active - 1);
+  const [active, setActive] = useState(0);
+  const [completed, setCompleted] = useState(active - 1);
 
   const steps = [
     {
@@ -40,10 +34,44 @@ const Checkout = () => {
     setActive(index);
   };
 
-  const onClickHandler = () => {
-    if (active > completed) setCompleted(active);
-    active > completed ? setActive(active + 1) : setActive(completed + 1);
+  const onClickNext = () => {
+    const updatedActive = active > completed ? active + 1 : completed + 1;
+    setActive(updatedActive);
+    setCompleted(active > completed ? active : completed);
   };
+
+  const Confirmation = () => {
+    return <div>Confirmation</div>;
+  };
+
+  const RenderButton = () => {
+    if (active + 1 === totalSteps) {
+      return (
+        <Button appearance="success" type="submit">
+          Save
+        </Button>
+      );
+    }
+
+    return (
+      <div className="d-flex justify-content-between">
+        <Link to="/cart" className="remove-text-decoration">
+          <Button>Back to cart</Button>
+        </Link>
+        <Button
+          appearance="primary"
+          type="button"
+          onClick={onClickNext}
+          icon="navigate_next"
+          iconAlign="right"
+        >
+          Next
+        </Button>
+      </div>
+    );
+  };
+
+  const Form = () => (active === 0 ? <AddressFrom /> : <PaymentForm />);
 
   return (
     <div className="mt-10 px-8 py-6 mb-5 d-flex justify-content-center">
@@ -61,6 +89,8 @@ const Checkout = () => {
             onChange={onChange}
           />
         </Center>
+        {active === steps.length ? <Confirmation /> : <Form />}
+        <RenderButton />
       </Card>
     </div>
   );
