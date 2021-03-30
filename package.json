@@ -7,6 +7,7 @@
     "@innovaccer/design-system": "^1.7.1-0",
     "@stripe/react-stripe-js": "^1.4.0",
     "@stripe/stripe-js": "^1.13.1",
+    "html-react-parser": "^1.2.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
@@ -17,7 +18,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint" : "npx prettier --write ."
+    "lint": "npx prettier --write ."
   },
   "eslintConfig": {
     "extends": [

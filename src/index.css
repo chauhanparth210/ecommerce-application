@@ -6,3 +6,47 @@ body {
   margin: 0;
   padding: 0;
 }
+
+.border {
+  border: var(--border);
+}
+
+.shadow {
+  box-shadow: var(--shadow-s);
+}
+
+.sticky-navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.flex-basis {
+  flex: 1 1 30%;
+}
+
+.gap {
+  gap: var(--spacing-4);
+}
+
+.item-number {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.remove-text-decoration {
+  text-decoration: none;
+}
+
+::-webkit-scrollbar {
+  width: var(--spacing-l);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary-dark);
+  border: var(--spacing-s) solid transparent;
+  background-clip: content-box;
+  border-radius: 6px;
+}
