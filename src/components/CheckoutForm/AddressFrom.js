@@ -1,5 +1,5 @@
 import React from 'react';
-import { Heading, Row, Column } from '@innovaccer/design-system';
+import { Heading } from '@innovaccer/design-system';
 
 const AddressFrom = () => {
   return (
