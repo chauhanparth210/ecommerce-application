@@ -47,8 +47,6 @@ function App() {
     fetchCart();
   }, []);
 
-  console.log(products, cart);
-
   return (
     <>
       <Navbar totalItems={cart.total_items} />

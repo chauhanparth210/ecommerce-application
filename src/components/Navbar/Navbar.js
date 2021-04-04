@@ -5,7 +5,7 @@ import { Link, useLocation } from 'react-router-dom';
 const Navbar = ({ totalItems }) => {
   const location = useLocation();
   return (
-    <div className="px-7 py-4 sticky-navbar bg-light d-flex align-items-center justify-content-between shadow">
+    <div className="px-8 py-4 sticky-navbar bg-light d-flex align-items-center justify-content-between shadow">
       <div>
         <Link to="/" className="remove-text-decoration">
           <Heading size="l">E-Commerce</Heading>

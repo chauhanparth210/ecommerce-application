@@ -1,10 +1,10 @@
 {
-  "name": "ecommerce",
+  "name": "ecommerceapplication",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@chec/commerce.js": "^2.3.2",
-    "@innovaccer/design-system": "^1.7.1-0",
+    "@innovaccer/design-system": "^1.7.1",
     "@stripe/react-stripe-js": "^1.4.0",
     "@stripe/stripe-js": "^1.13.1",
     "html-react-parser": "^1.2.4",
@@ -58,7 +58,13 @@
     }
   },
   "lint-staged": {
-    "*.+(js|jsx)": ["eslint --fix", "git add"],
-    "*.+(json|css|md)": ["prettier --write", "git add"]
+    "*.+(js|jsx)": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.+(json|css|md)": [
+      "prettier --write",
+      "git add"
+    ]
   }
 }
