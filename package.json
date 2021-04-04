@@ -7,6 +7,7 @@
     "@innovaccer/design-system": "^1.7.1",
     "@stripe/react-stripe-js": "^1.4.0",
     "@stripe/stripe-js": "^1.13.1",
+    "express": "^4.17.1",
     "html-react-parser": "^1.2.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -20,7 +21,8 @@
     "eject": "react-scripts eject",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\""
+    "format": "prettier --write \"**/*.+(js|jsx|json|css|md)\"",
+    "serve": "node server.js"
   },
   "eslintConfig": {
     "extends": [
