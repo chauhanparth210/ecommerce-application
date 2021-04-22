@@ -5,8 +5,6 @@
   "dependencies": {
     "@chec/commerce.js": "^2.3.2",
     "@innovaccer/design-system": "^1.7.1",
-    "@stripe/react-stripe-js": "^1.4.0",
-    "@stripe/stripe-js": "^1.13.1",
     "html-react-parser": "^1.2.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
