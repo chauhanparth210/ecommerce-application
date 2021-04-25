@@ -2,7 +2,7 @@ import React from 'react';
 import { Heading, Card, Text, Button, Column } from '@innovaccer/design-system';
 
 const CartItem = ({ item, onUpdateCartQty, onRemoveFromCart }) => {
-  const { id, media, name, price, quantity } = item;
+  const { id, media, name, line_total, quantity } = item;
 
   const handleUpdateCartQty = (lineItemId, newQuantity) =>
     onUpdateCartQty(lineItemId, newQuantity);
@@ -58,7 +58,7 @@ const CartItem = ({ item, onUpdateCartQty, onRemoveFromCart }) => {
                 </div>
               </div>
               <Heading size="m" appearance="subtle">
-                {price.formatted_with_symbol}
+                {line_total.formatted_with_symbol}
               </Heading>
             </div>
           </div>
