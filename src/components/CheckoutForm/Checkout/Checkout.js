@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
-import { Heading, Card, Stepper, Button } from '@innovaccer/design-system';
+import {
+  Heading,
+  Card,
+  Stepper,
+  Button,
+  Column,
+} from '@innovaccer/design-system';
 import AddressFrom from '../AddressFrom';
 import PaymentForm from '../PaymentForm';
-import { Link } from 'react-router-dom';
 
 const Center = (props) => {
   const { children, ...rest } = props;
@@ -52,46 +57,33 @@ const Checkout = () => {
         </Button>
       );
     }
-
-    return (
-      <div className="d-flex justify-content-between">
-        <Link to="/cart" className="remove-text-decoration">
-          <Button>Back to cart</Button>
-        </Link>
-        <Button
-          appearance="primary"
-          type="button"
-          onClick={onClickNext}
-          icon="navigate_next"
-          iconAlign="right"
-        >
-          Next
-        </Button>
-      </div>
-    );
+    return <></>;
   };
 
-  const Form = () => (active === 0 ? <AddressFrom /> : <PaymentForm />);
+  const Form = () =>
+    active === 0 ? <AddressFrom onClickNext={onClickNext} /> : <PaymentForm />;
 
   return (
     <div className="mt-10 px-8 py-6 mb-5 d-flex justify-content-center">
-      <Card className="w-50 px-8 py-6">
-        <Center>
-          <Heading appearance="default" size="xxl">
-            Checkout
-          </Heading>
-        </Center>
-        <Center className="my-5">
-          <Stepper
-            steps={steps}
-            active={active}
-            completed={completed}
-            onChange={onChange}
-          />
-        </Center>
-        {active === steps.length ? <Confirmation /> : <Form />}
-        <RenderButton />
-      </Card>
+      <Column size="6" sizeXS="12" sizeS="12" sizeM="8" sizeL="8" sizeXL="6">
+        <Card className="px-8 py-6">
+          <Center>
+            <Heading appearance="default" size="xxl">
+              Checkout
+            </Heading>
+          </Center>
+          <Center className="my-5">
+            <Stepper
+              steps={steps}
+              active={active}
+              completed={completed}
+              onChange={onChange}
+            />
+          </Center>
+          {active === steps.length ? <Confirmation /> : <Form />}
+          <RenderButton />
+        </Card>
+      </Column>
     </div>
   );
 };
