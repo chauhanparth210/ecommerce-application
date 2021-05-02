@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Heading,
   Input,
@@ -8,27 +8,66 @@ import {
   Button,
   Row,
   Column,
+  Dropdown,
 } from '@innovaccer/design-system';
 import { useForm } from '../../hooks/useForm';
 import { Link } from 'react-router-dom';
+import { commerce } from '../../lib/commerce';
 
-/**
- * FIELDS:
- * name = string
- * address = string
- * email =  string
- * city = string
- * shipping_country = INDIA
- * shipping_subdivision = string
- */
+const AddressFrom = ({ checkoutToken, onClickNext }) => {
+  const [shippingCountries, setShippingCountries] = useState([]);
+  const [shippingCountry, setShippingCountry] = useState('');
+  const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
+  // eslint-disable-next-line
+  const [shippingSubdivision, setShippingSubdivision] = useState('');
 
-const AddressFrom = (props) => {
-  const { onClickNext } = props;
+  const [loadingCountries, setLoadingCountries] = useState(true);
+  const [loadingSubdivisions, setLoadingSubdivisions] = useState(true);
+
+  const fetchShippingCountries = async (checkoutTokenId) => {
+    const { countries } = await commerce.services.localeListShippingCountries(
+      checkoutTokenId
+    );
+
+    setShippingCountries(countries);
+    setShippingCountry(Object.keys(countries)[0]);
+    setLoadingCountries(false);
+  };
+
+  const fetchSubdivisions = async (countryCode) => {
+    const { subdivisions } = await commerce.services.localeListSubdivisions(
+      countryCode
+    );
+
+    setShippingSubdivisions(subdivisions);
+    setShippingSubdivision(Object.keys(subdivisions)[0]);
+    setLoadingSubdivisions(false);
+  };
+
+  useEffect(() => {
+    fetchShippingCountries(checkoutToken.id);
+    // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    if (shippingCountry) fetchSubdivisions(shippingCountry);
+  }, [shippingCountry]);
+
+  let shippingCountriesOptions = Object.entries(shippingCountries).map(
+    ([code, name]) => ({
+      value: name,
+      label: name,
+    })
+  );
+
+  let shippingSubdivisionsOptions = Object.entries(shippingSubdivisions).map(
+    ([code, name]) => ({
+      value: name,
+      label: name,
+    })
+  );
 
   const { handleSubmit, handleChange, data, errors } = useForm({
-    initialValues: {
-      shipping_country: 'INDIA',
-    },
     validations: {
       name: {
         required: {
@@ -54,20 +93,22 @@ const AddressFrom = (props) => {
           message: 'City is required',
         },
       },
-      // shipping_subdivision: {
-      //   required: {
-      //     value: true,
-      //     message: 'Subdivision is required',
-      //   },
-      // },
+      shipping_country: {
+        required: {
+          message: 'Country is required',
+        },
+      },
+      shipping_subdivision: {
+        required: {
+          message: 'Subdivision is required',
+        },
+      },
     },
     onSubmit: () => {
       console.log(data);
       onClickNext();
     },
   });
-
-  console.log(errors);
 
   return (
     <div>
@@ -149,8 +190,14 @@ const AddressFrom = (props) => {
           </Column>
         </Row>
 
-        <Row className="m-4">
-          <Column>
+        <Row>
+          <Column
+            size="6"
+            sizeXS="12"
+            sizeS="12"
+            sizeM="12"
+            className="px-4 my-4"
+          >
             <Label withInput={true} required>
               City
             </Label>
@@ -166,6 +213,58 @@ const AddressFrom = (props) => {
             {errors.city && (
               <Caption error={true} withInput={true}>
                 {errors.city}
+              </Caption>
+            )}
+          </Column>
+          <Column
+            size="6"
+            sizeXS="12"
+            sizeS="12"
+            sizeM="12"
+            className="px-4 my-4"
+          >
+            <Label withInput={true} required>
+              Shipping Country
+            </Label>
+            <Dropdown
+              value={data.shipping_country || ''}
+              onChange={handleChange('shipping_country')}
+              placeholder="Shipping country"
+              error={errors.shipping_country}
+              options={shippingCountriesOptions}
+              loading={loadingCountries}
+            />
+            {errors.shipping_country && (
+              <Caption error={true} withInput={true}>
+                {errors.shipping_country}
+              </Caption>
+            )}
+          </Column>
+        </Row>
+
+        <Row>
+          <Column
+            size="6"
+            sizeXS="12"
+            sizeS="12"
+            sizeM="12"
+            className="px-4 my-4"
+          >
+            <Label withInput={true} required>
+              Shipping Subdivision
+            </Label>
+            <Dropdown
+              value={data.shipping_subdivision || ''}
+              onChange={handleChange('shipping_subdivision')}
+              placeholder="Shipping subdivision"
+              error={errors.shipping_subdivision}
+              options={shippingSubdivisionsOptions}
+              loading={loadingSubdivisions}
+              withSearch={true}
+            />
+            {errors.shipping_subdivision && (
+              <Caption error={true} withInput={true}>
+                {errors.shipping_subdivision}
               </Caption>
             )}
           </Column>

@@ -5,7 +5,12 @@ export const useForm = (options) => {
   const [errors, setErrors] = useState({});
 
   const handleChange = (key, sanitizeFn) => (e) => {
-    const value = sanitizeFn ? sanitizeFn(e.target.value) : e.target.value;
+    let value = '';
+    if (key === 'shipping_country' || key === 'shipping_subdivision') {
+      value = sanitizeFn ? sanitizeFn(e) : e;
+    } else {
+      value = sanitizeFn ? sanitizeFn(e.target.value) : e.target.value;
+    }
     delete errors[key];
     setErrors(errors);
     setData({

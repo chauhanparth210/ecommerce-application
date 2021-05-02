@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Heading,
   Card,
@@ -8,6 +8,8 @@ import {
 } from '@innovaccer/design-system';
 import AddressFrom from '../AddressFrom';
 import PaymentForm from '../PaymentForm';
+import { commerce } from '../../../lib/commerce';
+import { useHistory } from 'react-router-dom';
 
 const Center = (props) => {
   const { children, ...rest } = props;
@@ -18,9 +20,11 @@ const Center = (props) => {
   );
 };
 
-const Checkout = () => {
+const Checkout = ({ cart }) => {
   const [active, setActive] = useState(0);
   const [completed, setCompleted] = useState(active - 1);
+  const [checkoutToken, setCheckoutToken] = useState(null);
+  const history = useHistory();
 
   const steps = [
     {
@@ -32,6 +36,25 @@ const Checkout = () => {
       value: 'payment_details',
     },
   ];
+
+  useEffect(() => {
+    if (cart.id) {
+      const generateToken = async () => {
+        try {
+          const token = await commerce.checkout.generateToken(cart.id, {
+            type: 'cart',
+          });
+
+          setCheckoutToken(token);
+        } catch {
+          if (active !== steps.length) history.push('/');
+        }
+      };
+
+      generateToken();
+    }
+    // eslint-disable-next-line
+  }, [cart]);
 
   const totalSteps = steps.length;
 
@@ -61,7 +84,11 @@ const Checkout = () => {
   };
 
   const Form = () =>
-    active === 0 ? <AddressFrom onClickNext={onClickNext} /> : <PaymentForm />;
+    active === 0 ? (
+      <AddressFrom onClickNext={onClickNext} checkoutToken={checkoutToken} />
+    ) : (
+      <PaymentForm />
+    );
 
   return (
     <div className="mt-10 px-8 py-6 mb-5 d-flex justify-content-center">
@@ -80,7 +107,11 @@ const Checkout = () => {
               onChange={onChange}
             />
           </Center>
-          {active === steps.length ? <Confirmation /> : <Form />}
+          {active === steps.length ? (
+            <Confirmation />
+          ) : (
+            checkoutToken && <Form />
+          )}
           <RenderButton />
         </Card>
       </Column>
