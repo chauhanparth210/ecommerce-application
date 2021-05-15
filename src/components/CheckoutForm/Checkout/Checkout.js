@@ -9,7 +9,7 @@ import {
 import AddressFrom from '../AddressFrom';
 import PaymentForm from '../PaymentForm';
 import { commerce } from '../../../lib/commerce';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 const Center = (props) => {
   const { children, ...rest } = props;
@@ -20,11 +20,22 @@ const Center = (props) => {
   );
 };
 
-const Checkout = ({ cart }) => {
+const Checkout = ({ cart, onEmptyCart }) => {
   const [active, setActive] = useState(0);
   const [completed, setCompleted] = useState(active - 1);
   const [checkoutToken, setCheckoutToken] = useState(null);
+  const [shippingData, setShippingData] = useState({});
+  const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line
   const history = useHistory();
+
+  const handleEmptyCart = () => {
+    setLoading(true);
+    onEmptyCart().then((response) => {
+      setLoading(false);
+      onClickNext();
+    });
+  };
 
   const steps = [
     {
@@ -47,7 +58,7 @@ const Checkout = ({ cart }) => {
 
           setCheckoutToken(token);
         } catch {
-          if (active !== steps.length) history.push('/');
+          // if (active !== steps.length) history.push('/');
         }
       };
 
@@ -57,6 +68,11 @@ const Checkout = ({ cart }) => {
   }, [cart]);
 
   const totalSteps = steps.length;
+
+  const getherShippingInfo = (data) => {
+    setShippingData(data);
+    onClickNext();
+  };
 
   const onChange = (index) => {
     setActive(index);
@@ -69,15 +85,36 @@ const Checkout = ({ cart }) => {
   };
 
   const Confirmation = () => {
-    return <div>Confirmation</div>;
+    return (
+      <div className="w-100 d-flex flex-column align-items-center justify-content-center">
+        <Heading className="m-4" size="xl">
+          Thank you {shippingData.name} !!
+        </Heading>
+        <Link to="/" className="remove-text-decoration mb-5">
+          <Button size="large" appearance="primary">
+            Back to shopping
+          </Button>
+        </Link>
+      </div>
+    );
   };
 
   const RenderButton = () => {
     if (active + 1 === totalSteps) {
       return (
-        <Button appearance="success" type="submit">
-          Save
-        </Button>
+        <div className="d-flex justify-content-between mt-6">
+          <Button onClick={() => setActive((preAcitve) => preAcitve - 1)}>
+            Back
+          </Button>
+          <Button
+            appearance="success"
+            onClick={() => handleEmptyCart()}
+            type="submit"
+            loading={loading}
+          >
+            Pay {checkoutToken?.live.subtotal.formatted_with_symbol}
+          </Button>
+        </div>
       );
     }
     return <></>;
@@ -85,9 +122,14 @@ const Checkout = ({ cart }) => {
 
   const Form = () =>
     active === 0 ? (
-      <AddressFrom onClickNext={onClickNext} checkoutToken={checkoutToken} />
+      <AddressFrom
+        onClickNext={onClickNext}
+        checkoutToken={checkoutToken}
+        shippingData={shippingData}
+        getherShippingInfo={getherShippingInfo}
+      />
     ) : (
-      <PaymentForm />
+      <PaymentForm checkoutToken={checkoutToken} />
     );
 
   return (
