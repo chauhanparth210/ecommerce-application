@@ -21,9 +21,10 @@ const Center = (props) => {
 };
 
 const Checkout = ({ cart }) => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(1);
   const [completed, setCompleted] = useState(active - 1);
   const [checkoutToken, setCheckoutToken] = useState(null);
+  const [shippingData, setShippingData] = useState({});
   const history = useHistory();
 
   const steps = [
@@ -58,6 +59,11 @@ const Checkout = ({ cart }) => {
 
   const totalSteps = steps.length;
 
+  const getherShippingInfo = (data) => {
+    setShippingData(data);
+    onClickNext();
+  };
+
   const onChange = (index) => {
     setActive(index);
   };
@@ -69,15 +75,20 @@ const Checkout = ({ cart }) => {
   };
 
   const Confirmation = () => {
-    return <div>Confirmation</div>;
+    return <Heading>Thank you !!</Heading>;
   };
 
   const RenderButton = () => {
     if (active + 1 === totalSteps) {
       return (
-        <Button appearance="success" type="submit">
-          Save
-        </Button>
+        <div className="d-flex justify-content-between mt-6">
+          <Button onClick={() => setActive((preAcitve) => preAcitve - 1)}>
+            Back
+          </Button>
+          <Button appearance="success" onClick={onClickNext} type="submit">
+            Pay {checkoutToken?.live.subtotal.formatted_with_symbol}
+          </Button>
+        </div>
       );
     }
     return <></>;
@@ -85,9 +96,14 @@ const Checkout = ({ cart }) => {
 
   const Form = () =>
     active === 0 ? (
-      <AddressFrom onClickNext={onClickNext} checkoutToken={checkoutToken} />
+      <AddressFrom
+        onClickNext={onClickNext}
+        checkoutToken={checkoutToken}
+        shippingData={shippingData}
+        getherShippingInfo={getherShippingInfo}
+      />
     ) : (
-      <PaymentForm />
+      <PaymentForm checkoutToken={checkoutToken} />
     );
 
   return (

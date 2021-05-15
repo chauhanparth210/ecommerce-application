@@ -14,7 +14,12 @@ import { useForm } from '../../hooks/useForm';
 import { Link } from 'react-router-dom';
 import { commerce } from '../../lib/commerce';
 
-const AddressFrom = ({ checkoutToken, onClickNext }) => {
+const AddressFrom = ({
+  checkoutToken,
+  onClickNext,
+  shippingData,
+  getherShippingInfo,
+}) => {
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState('');
   const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
@@ -68,6 +73,14 @@ const AddressFrom = ({ checkoutToken, onClickNext }) => {
   );
 
   const { handleSubmit, handleChange, data, errors } = useForm({
+    initialValues: {
+      name: shippingData.name || '',
+      address: shippingData.address || '',
+      email: shippingData.email || '',
+      city: shippingData.city || '',
+      shipping_country: shippingData.shipping_country || '',
+      shipping_subdivision: shippingData.shipping_subdivision || '',
+    },
     validations: {
       name: {
         required: {
@@ -105,10 +118,19 @@ const AddressFrom = ({ checkoutToken, onClickNext }) => {
       },
     },
     onSubmit: () => {
-      console.log(data);
-      onClickNext();
+      getherShippingInfo(data);
     },
   });
+
+  if (loadingCountries || loadingSubdivisions) {
+    return (
+      <div className="d-flex align-items-center justify-content-center">
+        <Heading appearance="subtle" size="xl">
+          Loading...
+        </Heading>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -122,7 +144,7 @@ const AddressFrom = ({ checkoutToken, onClickNext }) => {
             sizeXS="12"
             sizeS="12"
             sizeM="12"
-            className="px-4 my-4"
+            className="px-3 my-4"
           >
             <Label withInput={true} required>
               Name
@@ -147,7 +169,7 @@ const AddressFrom = ({ checkoutToken, onClickNext }) => {
             sizeXS="12"
             sizeS="12"
             sizeM="12"
-            className="px-4 my-4"
+            className="px-3 my-4"
           >
             <Label withInput={true} required>
               Email
@@ -169,7 +191,7 @@ const AddressFrom = ({ checkoutToken, onClickNext }) => {
           </Column>
         </Row>
 
-        <Row className="m-4">
+        <Row className="px-3 my-4">
           <Column>
             <Label withInput={true} required>
               Address
@@ -196,7 +218,7 @@ const AddressFrom = ({ checkoutToken, onClickNext }) => {
             sizeXS="12"
             sizeS="12"
             sizeM="12"
-            className="px-4 my-4"
+            className="px-3 my-4"
           >
             <Label withInput={true} required>
               City
@@ -221,7 +243,7 @@ const AddressFrom = ({ checkoutToken, onClickNext }) => {
             sizeXS="12"
             sizeS="12"
             sizeM="12"
-            className="px-4 my-4"
+            className="px-3 my-4"
           >
             <Label withInput={true} required>
               Shipping Country
@@ -229,7 +251,7 @@ const AddressFrom = ({ checkoutToken, onClickNext }) => {
             <Dropdown
               value={data.shipping_country || ''}
               onChange={handleChange('shipping_country')}
-              placeholder="Shipping country"
+              placeholder={data.shipping_country || 'Shipping country'}
               error={errors.shipping_country}
               options={shippingCountriesOptions}
               loading={loadingCountries}
@@ -248,7 +270,7 @@ const AddressFrom = ({ checkoutToken, onClickNext }) => {
             sizeXS="12"
             sizeS="12"
             sizeM="12"
-            className="px-4 my-4"
+            className="px-3 my-4"
           >
             <Label withInput={true} required>
               Shipping Subdivision
@@ -256,7 +278,7 @@ const AddressFrom = ({ checkoutToken, onClickNext }) => {
             <Dropdown
               value={data.shipping_subdivision || ''}
               onChange={handleChange('shipping_subdivision')}
-              placeholder="Shipping subdivision"
+              placeholder={data.shipping_subdivision || 'Shipping subdivision'}
               error={errors.shipping_subdivision}
               options={shippingSubdivisionsOptions}
               loading={loadingSubdivisions}
@@ -277,7 +299,6 @@ const AddressFrom = ({ checkoutToken, onClickNext }) => {
           <Button
             appearance="primary"
             type="submit"
-            // onClick={onClickNext}
             icon="navigate_next"
             iconAlign="right"
             disabled={Object.keys(errors).length}

@@ -1,10 +1,32 @@
-import React from 'react';
-import { Heading, Button, Row } from '@innovaccer/design-system';
+import React, { useState } from 'react';
+import { Heading, Button, Row, Dialog } from '@innovaccer/design-system';
 import CartItem from './CartItem/CartItem';
 import { Link } from 'react-router-dom';
 
 const Cart = ({ cart, onUpdateCartQty, onRemoveFromCart, onEmptyCart }) => {
-  const handleEmptyCart = () => onEmptyCart();
+  const [openDialog, setDialog] = useState(false);
+
+  const onClose = () => {
+    setDialog(!openDialog);
+  };
+
+  const handleEmptyCart = () => {
+    onEmptyCart().then((response) => {
+      onClose();
+    });
+  };
+
+  const options = {
+    open: openDialog,
+    onClose,
+    heading: 'Empty cart',
+    description: 'Are you sure you want to empty this cart ?',
+    primaryButtonAppearance: 'alert',
+    primaryButtonLabel: 'Empty cart',
+    secondaryButtonLabel: 'Cancel',
+    primaryButtonCallback: handleEmptyCart,
+    secondaryButtonCallback: onClose,
+  };
 
   const EmptyCart = () => {
     return (
@@ -33,7 +55,12 @@ const Cart = ({ cart, onUpdateCartQty, onRemoveFromCart, onEmptyCart }) => {
             Subtotal: {cart.subtotal.formatted_with_symbol}
           </Heading>
           <div className="d-flex">
-            <Button appearance="alert" size="large" onClick={handleEmptyCart}>
+            <Dialog {...options} />
+            <Button
+              appearance="alert"
+              size="large"
+              onClick={() => setDialog(true)}
+            >
               Empty cart
             </Button>
             <Link to="/checkout" className="remove-text-decoration">
