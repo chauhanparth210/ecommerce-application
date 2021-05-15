@@ -21,7 +21,7 @@ const Center = (props) => {
 };
 
 const Checkout = ({ cart, onEmptyCart }) => {
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(0);
   const [completed, setCompleted] = useState(active - 1);
   const [checkoutToken, setCheckoutToken] = useState(null);
   const [shippingData, setShippingData] = useState({});
