@@ -69,7 +69,7 @@ function App() {
           />
         </Route>
         <Route exact path="/checkout">
-          <Checkout cart={cart} />
+          <Checkout cart={cart} onEmptyCart={handleEmptyCart} />
         </Route>
       </Switch>
     </>

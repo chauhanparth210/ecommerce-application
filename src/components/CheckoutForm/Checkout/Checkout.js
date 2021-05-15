@@ -9,7 +9,7 @@ import {
 import AddressFrom from '../AddressFrom';
 import PaymentForm from '../PaymentForm';
 import { commerce } from '../../../lib/commerce';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 const Center = (props) => {
   const { children, ...rest } = props;
@@ -20,12 +20,21 @@ const Center = (props) => {
   );
 };
 
-const Checkout = ({ cart }) => {
+const Checkout = ({ cart, onEmptyCart }) => {
   const [active, setActive] = useState(1);
   const [completed, setCompleted] = useState(active - 1);
   const [checkoutToken, setCheckoutToken] = useState(null);
   const [shippingData, setShippingData] = useState({});
+  const [loading, setLoading] = useState(false);
   const history = useHistory();
+
+  const handleEmptyCart = () => {
+    setLoading(true);
+    onEmptyCart().then((response) => {
+      setLoading(false);
+      onClickNext();
+    });
+  };
 
   const steps = [
     {
@@ -48,7 +57,7 @@ const Checkout = ({ cart }) => {
 
           setCheckoutToken(token);
         } catch {
-          if (active !== steps.length) history.push('/');
+          // if (active !== steps.length) history.push('/');
         }
       };
 
@@ -75,7 +84,18 @@ const Checkout = ({ cart }) => {
   };
 
   const Confirmation = () => {
-    return <Heading>Thank you !!</Heading>;
+    return (
+      <div className="w-100 d-flex flex-column align-items-center justify-content-center">
+        <Heading className="m-4" size="xl">
+          Thank you {shippingData.name} !!
+        </Heading>
+        <Link to="/" className="remove-text-decoration mb-5">
+          <Button size="large" appearance="primary">
+            Back to shopping
+          </Button>
+        </Link>
+      </div>
+    );
   };
 
   const RenderButton = () => {
@@ -85,7 +105,12 @@ const Checkout = ({ cart }) => {
           <Button onClick={() => setActive((preAcitve) => preAcitve - 1)}>
             Back
           </Button>
-          <Button appearance="success" onClick={onClickNext} type="submit">
+          <Button
+            appearance="success"
+            onClick={() => handleEmptyCart()}
+            type="submit"
+            loading={loading}
+          >
             Pay {checkoutToken?.live.subtotal.formatted_with_symbol}
           </Button>
         </div>
