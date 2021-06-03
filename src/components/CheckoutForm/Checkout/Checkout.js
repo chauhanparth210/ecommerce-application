@@ -26,6 +26,7 @@ const Checkout = ({ cart, onEmptyCart }) => {
   const [checkoutToken, setCheckoutToken] = useState(null);
   const [shippingData, setShippingData] = useState({});
   const [paying, setPaying] = useState(false);
+  // eslint-disable-next-line
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line
   const history = useHistory();
