@@ -52,3 +52,7 @@ body {
     display: none;
   }
 }
+
+.Row {
+  flex-grow: 1;
+}

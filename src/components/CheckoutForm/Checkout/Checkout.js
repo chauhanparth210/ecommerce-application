@@ -25,14 +25,15 @@ const Checkout = ({ cart, onEmptyCart }) => {
   const [completed, setCompleted] = useState(active - 1);
   const [checkoutToken, setCheckoutToken] = useState(null);
   const [shippingData, setShippingData] = useState({});
+  const [paying, setPaying] = useState(false);
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line
   const history = useHistory();
 
   const handleEmptyCart = () => {
-    setLoading(true);
+    setPaying(true);
     onEmptyCart().then((response) => {
-      setLoading(false);
+      setPaying(false);
       onClickNext();
     });
   };
@@ -50,6 +51,7 @@ const Checkout = ({ cart, onEmptyCart }) => {
 
   useEffect(() => {
     if (cart.id) {
+      setLoading(true);
       const generateToken = async () => {
         try {
           const token = await commerce.checkout.generateToken(cart.id, {
@@ -57,6 +59,7 @@ const Checkout = ({ cart, onEmptyCart }) => {
           });
 
           setCheckoutToken(token);
+          setLoading(false);
         } catch {
           // if (active !== steps.length) history.push('/');
         }
@@ -110,7 +113,7 @@ const Checkout = ({ cart, onEmptyCart }) => {
             appearance="success"
             onClick={() => handleEmptyCart()}
             type="submit"
-            loading={loading}
+            loading={paying}
           >
             Pay {checkoutToken?.live.subtotal.formatted_with_symbol}
           </Button>
