@@ -23,8 +23,15 @@ const Center = (props) => {
 const Checkout = ({ cart, onEmptyCart }) => {
   const [active, setActive] = useState(0);
   const [completed, setCompleted] = useState(active - 1);
-  const [checkoutToken, setCheckoutToken] = useState(null);
-  const [shippingData, setShippingData] = useState({});
+  const [checkoutToken, setCheckoutToken] = useState({});
+  const [shippingData, setShippingData] = useState({
+    name: '',
+    address: '',
+    email: '',
+    city: '',
+    shipping_country: '',
+    shipping_subdivision: '',
+  });
   const [paying, setPaying] = useState(false);
   // eslint-disable-next-line
   const [loading, setLoading] = useState(false);
@@ -58,7 +65,7 @@ const Checkout = ({ cart, onEmptyCart }) => {
           const token = await commerce.checkout.generateToken(cart.id, {
             type: 'cart',
           });
-
+          console.log('GET_TOKEN', token);
           setCheckoutToken(token);
           setLoading(false);
         } catch {
@@ -73,6 +80,12 @@ const Checkout = ({ cart, onEmptyCart }) => {
 
   const totalSteps = steps.length;
 
+  const onClickNext = () => {
+    const updatedActive = active > completed ? active + 1 : completed + 1;
+    setActive(updatedActive);
+    setCompleted(active > completed ? active : completed);
+  };
+
   const getherShippingInfo = (data) => {
     setShippingData(data);
     onClickNext();
@@ -80,12 +93,6 @@ const Checkout = ({ cart, onEmptyCart }) => {
 
   const onChange = (index) => {
     setActive(index);
-  };
-
-  const onClickNext = () => {
-    const updatedActive = active > completed ? active + 1 : completed + 1;
-    setActive(updatedActive);
-    setCompleted(active > completed ? active : completed);
   };
 
   const Confirmation = () => {
@@ -127,7 +134,6 @@ const Checkout = ({ cart, onEmptyCart }) => {
   const Form = () =>
     active === 0 ? (
       <AddressFrom
-        onClickNext={onClickNext}
         checkoutToken={checkoutToken}
         shippingData={shippingData}
         getherShippingInfo={getherShippingInfo}

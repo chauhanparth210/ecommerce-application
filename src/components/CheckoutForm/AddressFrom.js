@@ -14,12 +14,7 @@ import { useForm } from '../../hooks/useForm';
 import { Link } from 'react-router-dom';
 import { commerce } from '../../lib/commerce';
 
-const AddressFrom = ({
-  checkoutToken,
-  onClickNext,
-  shippingData,
-  getherShippingInfo,
-}) => {
+const AddressFrom = ({ checkoutToken, shippingData, getherShippingInfo }) => {
   const [shippingCountries, setShippingCountries] = useState([]);
   const [shippingCountry, setShippingCountry] = useState('');
   const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
@@ -29,11 +24,13 @@ const AddressFrom = ({
   const [loadingCountries, setLoadingCountries] = useState(true);
   const [loadingSubdivisions, setLoadingSubdivisions] = useState(true);
 
+  // React.useMemo(() => console.log('HELLO'), []);
+
   const fetchShippingCountries = async (checkoutTokenId) => {
     const { countries } = await commerce.services.localeListShippingCountries(
       checkoutTokenId
     );
-
+    console.log('FETCH_COUNTRY');
     setShippingCountries(countries);
     setShippingCountry(Object.keys(countries)[0]);
     setLoadingCountries(false);
@@ -43,16 +40,17 @@ const AddressFrom = ({
     const { subdivisions } = await commerce.services.localeListSubdivisions(
       countryCode
     );
-
+    console.log('FETCH_SUBDIVISION');
     setShippingSubdivisions(subdivisions);
     setShippingSubdivision(Object.keys(subdivisions)[0]);
     setLoadingSubdivisions(false);
   };
 
   useEffect(() => {
-    fetchShippingCountries(checkoutToken.id);
-    // eslint-disable-next-line
-  }, []);
+    if (checkoutToken.id) {
+      fetchShippingCountries(checkoutToken.id);
+    }
+  }, [checkoutToken.id]);
 
   useEffect(() => {
     if (shippingCountry) fetchSubdivisions(shippingCountry);
