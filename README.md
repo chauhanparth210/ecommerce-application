@@ -4,8 +4,8 @@ This is resposive ecommerce-application
 
 ## Main Technologies
 ### Frontend side :
-- React.js (frontend library for build use experience) + Hooks
-- Context API (State management)
+- React.js (frontend library for build use experience)
+- Commerce.js (managing the products)
 
 
 ### Installation step
